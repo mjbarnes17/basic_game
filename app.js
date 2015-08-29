@@ -19,21 +19,21 @@ var canvas = document.getElementById('canvas'),
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
-var keyDownHandler = function(evnt) {
-    if (evnt.keyCode == 39) {
+function keyDownHandler(envt) {
+    if (envt.keyCode == 39) {
         rightPressed = true;
     } else if (envt.keyCode == 37) {
         leftPressed = true;
     }
-};
+}
 
-var keyUpHandler = function(evnt) {
-    if (evnt.keyCode == 39) {
+function keyUpHandler(envt) {
+    if (envt.keyCode == 39) {
         rightPressed = false;
     } else if (envt.keyCode == 37) {
         leftPressed = false;
     }
-};
+}
 
 // Draws paddle
 var drawPaddle = function() {
