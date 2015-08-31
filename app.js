@@ -2,19 +2,42 @@
 var canvas = document.getElementById('canvas'),
 // Grabing the 2D rendering context
     context = canvas.getContext('2d'),
+    // Canvas
     height = canvas.height,
     width = canvas.width,
     x = canvas.width / 2,
     y = canvas.height - 30,
     dx = 1,
     dy = -1,
+    // Ball
     ballRadious = 5,
-    paddleHeight = 10,
-    paddleWidth = 50,
+    // Paddle
+    paddleHeight = 3,
+    paddleWidth = 75,
     paddleX = (canvas.width - paddleWidth) / 2,
     paddleY = canvas.height - paddleHeight,
+    // Keys
     rightPressed = false,
-    leftPressed = false;
+    leftPressed = false,
+    // Bricks
+    brickRowCount = 3,
+    brickColumnCount = 5,
+    brickWidth = 40,
+    brickHeight = 10,
+    brickPadding = 10,
+    brickOffsetTop = 10,
+    brickOffsetLeft = 30,
+    bricks = [];
+
+for (col = 0; col < brickColumnCount; col++) {
+  bricks[col] = [];
+  for (row = 0; row < brickRowCount; row++) {
+    bricks[col][row] = {
+      x: 0,
+      y: 0
+    };
+  }
+}
 
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
@@ -53,9 +76,27 @@ var drawBall = function() {
   context.closePath();
 };
 
+// Draw Bricks
+var drawBricks = function() {
+  for (col = 0; col < brickColumnCount; col++) {
+    for (row = 0; row < brickRowCount; row++) {
+      var brickX = (col * (brickWidth + brickPadding)) + brickOffsetLeft;
+      var brickY = (row * (brickHeight + brickPadding)) + brickOffsetTop;
+      bricks[col][row].x = brickX;
+      bricks[col][row].y = brickY;
+      context.beginPath();
+      context.rect(brickX, brickY, brickWidth, brickHeight);
+      context.fillStyle = 'red';
+      context.fill();
+      context.closePath();
+    }
+  }
+};
+
 // Draws on the canvas element
 var draw = function() {
   context.clearRect(0, 0, width, height);
+  drawBricks();
   drawBall();
   drawPaddle();
 
@@ -72,8 +113,8 @@ var draw = function() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      alert("GAME OVER");
-      document.location.reload();
+      // alert("GAME OVER");
+      // document.location.reload();
     }
   }
 
