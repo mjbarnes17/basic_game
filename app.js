@@ -58,18 +58,31 @@ var draw = function() {
   context.clearRect(0, 0, width, height);
   drawBall();
   drawPaddle();
-  // Reverses the value of ball position when it reaches the top or bottom of canvas window
-  if (y + dy > height - ballRadious || y + dy < ballRadious) {
-    dy = -dy;
-  }
+
   // Reverses the value of ball position when it reaches the left or right of canvas window
   if (x + dx > width - ballRadious || x + dx < ballRadious) {
     dx = -dx;
   }
-  if (rightPressed && paddleX < canvas.width - paddleWidth) {
-    paddleX += 7;
+  // Reverses the value of ball position when it reaches the top or bottom of canvas window
+  if (y + dy < ballRadious) {
+    dy = -dy;
+  } else if (y + dy > height - ballRadious) {
+    // If the ball center is within the paddle width then ball will bounce of paddle
+    // Otherwise it's game over
+    if (x > paddleX && x < paddleX + paddleWidth) {
+      dy = -dy;
+    } else {
+      alert("GAME OVER");
+      document.location.reload();
+    }
+  }
+
+
+  // Move the paddle left or right as long as the paddle width is within the canvas widow width
+  if (rightPressed && paddleX < width - paddleWidth) {
+    paddleX += 3;
   } else if (leftPressed && paddleX > 0) {
-    paddleX -= 7;
+    paddleX -= 3;
   }
   x += dx;
   y += dy;
@@ -77,5 +90,5 @@ var draw = function() {
 
 
 
-// setInterval() fires the draws every 5 miliseconds
+// setInterval() fires the draws every .5 miliseconds
 setInterval(draw, 5);
