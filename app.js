@@ -35,7 +35,8 @@ for (col = 0; col < brickColumnCount; col++) {
   for (row = 0; row < brickRowCount; row++) {
     bricks[col][row] = {
       x: 0,
-      y: 0
+      y: 0,
+      status: 1
     };
   }
 }
@@ -62,6 +63,24 @@ function keyUpHandler(envt) {
     }
 }
 
+// Brick collision detection
+var brickCollisionDetection = function() {
+  for (col = 0; col < brickColumnCount; col++) {
+    for (row = 0; row < brickRowCount; row++) {
+      var brick = bricks[col][row];
+      if (brick.status == 1) {
+        if(x > brick.x &&
+            x < brick.x + brickWidth &&
+            y > brick.y &&
+            y < brick.y + brickHeight) {
+          dy = -dy;
+          brick.status = 0;
+        }
+      }
+    }
+  }
+};
+
 // Draws paddle
 var drawPaddle = function() {
   context.beginPath();
@@ -80,19 +99,21 @@ var drawBall = function() {
   context.closePath();
 };
 
-// Draw Bricks field
+// Draws Bricks field
 var drawBricks = function() {
   for (col = 0; col < brickColumnCount; col++) {
     for (row = 0; row < brickRowCount; row++) {
-      var brickX = (col * (brickWidth + brickPadding)) + brickOffsetLeft;
-      var brickY = (row * (brickHeight + brickPadding)) + brickOffsetTop;
-      bricks[col][row].x = brickX;
-      bricks[col][row].y = brickY;
-      context.beginPath();
-      context.rect(brickX, brickY, brickWidth, brickHeight);
-      context.fillStyle = 'red';
-      context.fill();
-      context.closePath();
+      if (bricks[col][row].status == 1) {
+        var brickX = (col * (brickWidth + brickPadding)) + brickOffsetLeft;
+        var brickY = (row * (brickHeight + brickPadding)) + brickOffsetTop;
+        bricks[col][row].x = brickX;
+        bricks[col][row].y = brickY;
+        context.beginPath();
+        context.rect(brickX, brickY, brickWidth, brickHeight);
+        context.fillStyle = 'red';
+        context.fill();
+        context.closePath();
+      }
     }
   }
 };
@@ -103,6 +124,7 @@ var draw = function() {
   drawBricks();
   drawBall();
   drawPaddle();
+  brickCollisionDetection();
 
   // Reverses the value of ball position when it reaches the left or right of canvas window
   if (x + dx > width - ballRadious || x + dx < ballRadious) {
@@ -121,7 +143,6 @@ var draw = function() {
       document.location.reload();
     }
   }
-
 
   // Move the paddle left or right as long as the paddle width is within the canvas widow width
   if (rightPressed && paddleX < width - paddleWidth) {
