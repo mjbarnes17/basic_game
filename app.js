@@ -29,6 +29,7 @@ var canvas = document.getElementById('canvas'),
     brickOffsetLeft = 30,
     bricks = [];
 
+// Stores each brick in the bricks[]
 for (col = 0; col < brickColumnCount; col++) {
   bricks[col] = [];
   for (row = 0; row < brickRowCount; row++) {
@@ -39,9 +40,11 @@ for (col = 0; col < brickColumnCount; col++) {
   }
 }
 
+// Keyboard event listeners
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
 
+// Updates the 'keydown' event's boolean value to true is key is pressed
 function keyDownHandler(envt) {
     if (envt.keyCode == 39) {
         rightPressed = true;
@@ -50,6 +53,7 @@ function keyDownHandler(envt) {
     }
 }
 
+// Updates the 'keyup' event's boolean value to false if key is released
 function keyUpHandler(envt) {
     if (envt.keyCode == 39) {
         rightPressed = false;
@@ -76,7 +80,7 @@ var drawBall = function() {
   context.closePath();
 };
 
-// Draw Bricks
+// Draw Bricks field
 var drawBricks = function() {
   for (col = 0; col < brickColumnCount; col++) {
     for (row = 0; row < brickRowCount; row++) {
@@ -113,8 +117,8 @@ var draw = function() {
     if (x > paddleX && x < paddleX + paddleWidth) {
       dy = -dy;
     } else {
-      // alert("GAME OVER");
-      // document.location.reload();
+      alert("GAME OVER");
+      document.location.reload();
     }
   }
 
