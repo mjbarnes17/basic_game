@@ -67,9 +67,9 @@ function keyUpHandler(evnt) {
 }
 
 // Updates the paddle position based on mouse position
-function mouseMoveHandler(e) {
-    var relativeX = e.clientX - canvas.offsetLeft;
-    if(relativeX > 0 && relativeX < canvas.width) {
+function mouseMoveHandler(evnt) {
+    var relativeX = evnt.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < width) {
         paddleX = relativeX - paddleWidth/2;
     }
 }
