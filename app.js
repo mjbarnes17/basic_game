@@ -45,22 +45,32 @@ for (col = 0; col < brickColumnCount; col++) {
 // Keyboard event listeners
 document.addEventListener("keydown", keyDownHandler, false);
 document.addEventListener("keyup", keyUpHandler, false);
+// Mouse event listener
+document.addEventListener("mousemove", mouseMoveHandler, false);
 
 // Updates the 'keydown' event's boolean value to true is key is pressed
-function keyDownHandler(envt) {
-    if (envt.keyCode == 39) {
+function keyDownHandler(evnt) {
+    if (evnt.keyCode == 39) {
         rightPressed = true;
-    } else if (envt.keyCode == 37) {
+    } else if (evnt.keyCode == 37) {
         leftPressed = true;
     }
 }
 
 // Updates the 'keyup' event's boolean value to false if key is released
-function keyUpHandler(envt) {
-    if (envt.keyCode == 39) {
+function keyUpHandler(evnt) {
+    if (evnt.keyCode == 39) {
         rightPressed = false;
-    } else if (envt.keyCode == 37) {
+    } else if (evnt.keyCode == 37) {
         leftPressed = false;
+    }
+}
+
+// Updates the paddle position based on mouse position
+function mouseMoveHandler(e) {
+    var relativeX = e.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < canvas.width) {
+        paddleX = relativeX - paddleWidth/2;
     }
 }
 
