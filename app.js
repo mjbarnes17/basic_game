@@ -25,9 +25,10 @@ var canvas = document.getElementById('canvas'),
     brickWidth = 40,
     brickHeight = 10,
     brickPadding = 10,
-    brickOffsetTop = 10,
+    brickOffsetTop = 30,
     brickOffsetLeft = 30,
-    bricks = [];
+    bricks = [],
+    score = 0;
 
 // Stores each brick in the bricks[]
 for (col = 0; col < brickColumnCount; col++) {
@@ -75,10 +76,22 @@ var brickCollisionDetection = function() {
             y < brick.y + brickHeight) {
           dy = -dy;
           brick.status = 0;
+          score++;
+          if (score == brickRowCount * brickColumnCount) {
+            alert("CONGRATULATIONS, YOU WIN!");
+            document.location.reload();
+          }
         }
       }
     }
   }
+};
+
+// Draws score text
+var drawScore = function() {
+  context.font = '12px Arial';
+  context.fillStyle = 'lime';
+  context.fillText("Score: " + score, 8, 20);
 };
 
 // Draws paddle
@@ -124,6 +137,7 @@ var draw = function() {
   drawBricks();
   drawBall();
   drawPaddle();
+  drawScore();
   brickCollisionDetection();
 
   // Reverses the value of ball position when it reaches the left or right of canvas window
