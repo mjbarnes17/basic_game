@@ -25,9 +25,10 @@ var canvas = document.getElementById('canvas'),
     brickWidth = 40,
     brickHeight = 10,
     brickPadding = 10,
-    brickOffsetTop = 10,
+    brickOffsetTop = 30,
     brickOffsetLeft = 30,
-    bricks = [];
+    bricks = [],
+    score = 0;
 
 // Stores each brick in the bricks[]
 for (col = 0; col < brickColumnCount; col++) {
@@ -41,11 +42,12 @@ for (col = 0; col < brickColumnCount; col++) {
   }
 }
 
+
 // Updates the 'keydown' event's boolean value to true is key is pressed
 var keyDownHandler = function(envt) {
     if (envt.keyCode == 39) {
         rightPressed = true;
-    } else if (envt.keyCode == 37) {
+    } else if (evnt.keyCode == 37) {
         leftPressed = true;
     }
 };
@@ -54,10 +56,18 @@ var keyDownHandler = function(envt) {
 var keyUpHandler = function(envt) {
     if (envt.keyCode == 39) {
         rightPressed = false;
-    } else if (envt.keyCode == 37) {
+    } else if (evnt.keyCode == 37) {
         leftPressed = false;
     }
 };
+
+// Updates the paddle position based on mouse position
+function mouseMoveHandler(evnt) {
+    var relativeX = evnt.clientX - canvas.offsetLeft;
+    if(relativeX > 0 && relativeX < width) {
+        paddleX = relativeX - paddleWidth/2;
+    }
+}
 
 // Brick collision detection
 var brickCollisionDetection = function() {
@@ -71,10 +81,22 @@ var brickCollisionDetection = function() {
             y < brick.y + brickHeight) {
           dy = -dy;
           brick.status = 0;
+          score++;
+          if (score == brickRowCount * brickColumnCount) {
+            alert("CONGRATULATIONS, YOU WIN!");
+            document.location.reload();
+          }
         }
       }
     }
   }
+};
+
+// Draws score text
+var drawScore = function() {
+  context.font = '12px Arial';
+  context.fillStyle = 'lime';
+  context.fillText("Score: " + score, 8, 20);
 };
 
 // Draws paddle
@@ -120,6 +142,7 @@ var draw = function() {
   drawBricks();
   drawBall();
   drawPaddle();
+  drawScore();
   brickCollisionDetection();
 
   // Reverses the value of ball position when it reaches the left or right of canvas window
