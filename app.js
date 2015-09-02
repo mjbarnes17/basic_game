@@ -41,27 +41,23 @@ for (col = 0; col < brickColumnCount; col++) {
   }
 }
 
-// Keyboard event listeners
-document.addEventListener("keydown", keyDownHandler, false);
-document.addEventListener("keyup", keyUpHandler, false);
-
 // Updates the 'keydown' event's boolean value to true is key is pressed
-function keyDownHandler(envt) {
+var keyDownHandler = function(envt) {
     if (envt.keyCode == 39) {
         rightPressed = true;
     } else if (envt.keyCode == 37) {
         leftPressed = true;
     }
-}
+};
 
 // Updates the 'keyup' event's boolean value to false if key is released
-function keyUpHandler(envt) {
+var keyUpHandler = function(envt) {
     if (envt.keyCode == 39) {
         rightPressed = false;
     } else if (envt.keyCode == 37) {
         leftPressed = false;
     }
-}
+};
 
 // Brick collision detection
 var brickCollisionDetection = function() {
@@ -155,6 +151,8 @@ var draw = function() {
 };
 
 
-
+// Keyboard event listeners
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
 // setInterval() fires the draws every .5 miliseconds
 setInterval(draw, 5);
